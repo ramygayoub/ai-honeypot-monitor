@@ -94,3 +94,16 @@ Deployed **Splunk Enterprise** as a second, independent analysis pipeline alongs
 - **Identified an attacker running a sophisticated, multi-fallback system-fingerprinting script** (testing `busybox`/`bash`/`sh` execution paths, checking `/proc/device-tree/model` for ARM/embedded hardware) — consistent with reconnaissance for IoT/embedded-device botnet targeting, more advanced than the majority of observed recon attempts.
 
 **Dashboard**: built in Splunk Dashboard Studio with three panels (login outcome breakdown, top attacking IPs, attack activity over time), backed by hand-authored SPL queries rather than Splunk's built-in defaults.
+
+## SIEM Integration — Splunk
+
+Deployed **Splunk Enterprise** as a second, independent analysis pipeline alongside the Gemini-based classifier, ingesting the same real Cowrie log data to demonstrate SIEM operations skills: SPL query authoring, dashboard building, and log-based incident detection.
+
+**Real findings surfaced through Splunk analysis:**
+
+- **913 successful logins vs. only 7 failures** — expected honeypot behavior (Cowrie is intentionally permissive to maximize observed post-login attacker activity), not a misconfiguration.
+- **A single source IP, `45.156.87.204`, generated 6,086 sessions** — over 20x the next-highest attacker — consistent with dedicated botnet infrastructure repeatedly targeting the honeypot.
+- **A Splunk timeline query (`timechart span=1h count`) revealed a service outage**: 7,382 events compressed into a single hour on July 17, followed by a hard drop to zero. Root-caused to the Cowrie process being killed by the Linux OOM killer under memory pressure on the VM's 1GB RAM. Diagnosed via `splunkd.log` and system memory analysis, resolved by provisioning 4GB of swap space and restarting the service — the outage had gone undetected for approximately 3 days until identified through this analysis.
+- **Identified an attacker running a sophisticated, multi-fallback system-fingerprinting script** (testing `busybox`/`bash`/`sh` execution paths, checking `/proc/device-tree/model` for ARM/embedded hardware) — consistent with reconnaissance for IoT/embedded-device botnet targeting, more advanced than the majority of observed recon attempts.
+
+**Dashboard**: built in Splunk Dashboard Studio with three panels (login outcome breakdown, top attacking IPs, attack activity over time), backed by hand-authored SPL queries rather than Splunk's built-in defaults.
