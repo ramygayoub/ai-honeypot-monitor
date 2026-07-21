@@ -111,3 +111,7 @@ Deployed **Splunk Enterprise** as a second, independent analysis pipeline alongs
 ## Containerization — Docker
 
 Containerized the classifier and dashboard services using Docker and Docker Compose, with a shared named volume for the SQLite database and a read-only bind mount for the live Cowrie log file. Deployed and verified running on the same resource-constrained VM (894MB RAM) used throughout the project, requiring careful resource management (temporarily suspending the Splunk service during image builds to avoid out-of-memory conditions) — itself a practical lesson in capacity planning under real hardware constraints.
+
+## CI/CD — GitHub Actions
+
+Automated pipeline running on every push: lints Python code with `ruff`, validates syntax, and verifies the Docker image builds successfully before any deployment. Caught and fixed a real Dockerfile filename mismatch during initial setup, itself a genuine example of CI catching a real bug before it reached a running environment.
