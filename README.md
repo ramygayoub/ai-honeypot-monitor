@@ -107,3 +107,7 @@ Deployed **Splunk Enterprise** as a second, independent analysis pipeline alongs
 - **Identified an attacker running a sophisticated, multi-fallback system-fingerprinting script** (testing `busybox`/`bash`/`sh` execution paths, checking `/proc/device-tree/model` for ARM/embedded hardware) — consistent with reconnaissance for IoT/embedded-device botnet targeting, more advanced than the majority of observed recon attempts.
 
 **Dashboard**: built in Splunk Dashboard Studio with three panels (login outcome breakdown, top attacking IPs, attack activity over time), backed by hand-authored SPL queries rather than Splunk's built-in defaults.
+
+## Containerization — Docker
+
+Containerized the classifier and dashboard services using Docker and Docker Compose, with a shared named volume for the SQLite database and a read-only bind mount for the live Cowrie log file. Deployed and verified running on the same resource-constrained VM (894MB RAM) used throughout the project, requiring careful resource management (temporarily suspending the Splunk service during image builds to avoid out-of-memory conditions) — itself a practical lesson in capacity planning under real hardware constraints.
